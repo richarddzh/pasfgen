@@ -1,0 +1,6 @@
+templatedir=.
+outputdir=.
+tablename=FooBar
+templatefile=demo.txt
+exportfile=I${tablenamePascal}Hello.txt
+
