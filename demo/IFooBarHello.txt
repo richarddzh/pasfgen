@@ -1,2 +1,11 @@
-Hello FooBar
-
+Hello fooBar
+cap_first FooBar
+uncap_first fooBar
+lower foobar
+upper FOOBAR
+  pkey is a primary key of type String
+how many primary keys: 1
+use primary key directly: pkey of type String
+  iha/Iha is a field of type int
+  strha/Strha is a field of type String
+  pkey/Pkey is a field of type String
