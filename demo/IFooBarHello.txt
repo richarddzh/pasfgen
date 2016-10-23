@@ -6,6 +6,14 @@ upper FOOBAR
   pkey is a primary key of type String
 how many primary keys: 1
 use primary key directly: pkey of type String
-  iha/Iha is a field of type int
+List all the field items
   strha/Strha is a field of type String
+  iha/Iha is a field of type int
   pkey/Pkey is a field of type String
+Query items are selected 2 items
+  pkey is a query item
+  iha is a query item
+Insert items are all items
+  strha is an insert item
+  iha is an insert item
+  pkey is an insert item

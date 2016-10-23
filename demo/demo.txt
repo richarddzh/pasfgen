@@ -8,6 +8,15 @@ upper ${tablename?upper_case}
 </#list>
 how many primary keys: ${primarykeyCount}
 use primary key directly: ${primarykey.name} of type ${primarykey.type}
+List all the field items
 <#list items as item>
   ${item.name}/${item.name?cap_first} is a field of type ${item.type}
+</#list>
+Query items are selected 2 items
+<#list queryitems as item>
+  ${item.name} is a query item
+</#list>
+Insert items are all items
+<#list insertitems as item>
+  ${item.name} is an insert item
 </#list>

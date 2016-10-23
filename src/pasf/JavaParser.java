@@ -15,19 +15,17 @@ import java.util.regex.Pattern;
 
 public class JavaParser {
 	
-	private List<Object> keys;
-	private List<Object> primaryKeys;
+	private Map<String, Object> keys;
 	private Config config;
 	private Pattern pattern;
-	private String[] primaryKeyNames;
+	private String[] extendSelections = new String[] { "primarykeys", "queryitems", "insertitems", "updateitems" };
 	
 	public JavaParser(Config config)
 	{
 		this.config = config;
-		this.keys = new ArrayList<Object>();
-		this.primaryKeys = new ArrayList<Object>();
+		this.keys = new HashMap<String, Object>();
 		this.pattern = Pattern.compile(config.properties.getProperty("fieldregex"));
-		this.primaryKeyNames = config.properties.getProperty("primarykeys").split(";");
+		
 		String dir = config.properties.getProperty("mybatisdir");
 		String tablename = config.properties.getProperty("tablename");
 		this.parseFile(FileSystems.getDefault().getPath(dir, tablename + ".java").toFile());
@@ -37,11 +35,30 @@ public class JavaParser {
 	public void extendDataMap(Map<String, Object> map)
 	{
 		System.out.println("Add " + keys.size() + " items to data map");
-		map.put("items", keys);
-		System.out.println("Add " + primaryKeys.size() + " primary keys to data map");
-		map.put("primarykeys", primaryKeys);
-		map.put("primarykeyCount", primaryKeys.size());
-		map.put("primarykey", primaryKeys.get(0));
+		List<Object> allkeys = new ArrayList<Object>(keys.values());
+		map.put("items", allkeys);
+		for (String skey : extendSelections)
+		{
+			System.out.println("Generate partial key collection " + skey);
+			String names = config.properties.getProperty(skey);
+			List<Object> selectKeys = new ArrayList<Object>();
+			if (names == null || names.isEmpty())
+			{
+				System.out.println("Use all keys to set " + skey);
+				selectKeys = allkeys;
+			}
+			else
+			{
+				for (String name : names.split(";"))
+				{
+					selectKeys.add(keys.get(name));
+				}
+			}
+			map.put(skey, selectKeys);
+			map.put(skey.substring(0, skey.length() - 1), selectKeys.get(0));
+			map.put(skey.substring(0, skey.length() - 1) + "Count", selectKeys.size());
+			System.out.println("Add " + selectKeys.size() + " items to data map as " + skey);
+		}
 	}
 	
 	@SuppressWarnings("resource")
@@ -64,14 +81,7 @@ public class JavaParser {
 						String name = m.group("name");
 						item.put("name", name);
 						item.put("type", m.group("type"));
-						this.keys.add(item);
-						for (int i = 0; i < this.primaryKeyNames.length; i++)
-						{
-							if (name.equalsIgnoreCase(this.primaryKeyNames[i]))
-							{
-								this.primaryKeys.add(item);
-							}
-						}
+						this.keys.put(name, item);
 					}
 				}
 			} catch (Exception e) {

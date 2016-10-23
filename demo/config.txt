@@ -6,4 +6,5 @@ templatefile=demo.txt
 exportfile=I${tablename?cap_first}Hello.txt
 primarykeys=pkey
 fieldregex=^\\s*private\\s+(?<type>\\w+)\\s+(?<name>\\w+)\\s*;
+queryitems=pkey;iha
 
