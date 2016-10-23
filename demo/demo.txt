@@ -1,3 +1,4 @@
+试一试中文
 Hello ${tablename}
 cap_first ${tablename?cap_first}
 uncap_first ${tablename?uncap_first}

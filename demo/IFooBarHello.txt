@@ -1,3 +1,4 @@
+试一试中文
 Hello fooBar
 cap_first FooBar
 uncap_first fooBar
